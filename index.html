@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Raima 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #ffc0cb;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.page {
+    display: none;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* PAGE 0 */
+#heartPage button {
+    font-size: 120px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* PAGE 1 */
+#cover img {
+    width: 260px; /* slightly bigger */
+    border-radius: 50%;
+    border: 5px solid white;
+}
+
+#cover button {
+    margin-top: 20px;
+    padding: 14px 40px;
+    font-size: 22px;
+    border-radius: 30px;
+    border: none;
+    background: #ff3366;
+    color: white;
+    cursor: pointer;
+}
+
+/* PAGE 2 */
+#main img {
+    width: 300px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.choice {
+    padding: 14px 32px;
+    font-size: 22px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+}
+
+#yesBtn {
+    background: #ff3366;
+    color: white;
+}
+
+#noBtn {
+    background: white;
+    color: #ff3366;
+}
+
+/* PAGE 3 */
+#final img {
+    width: 260px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+/* FALLING DECOR */
+.fall {
+    position: fixed;
+    top: -30px;
+    font-size: 26px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 0 -->
+<div id="heartPage" class="page" style="display:flex;">
+    <button>❤️</button>
+</div>
+
+<!-- PAGE 1 -->
+<div id="cover" class="page">
+    <div>
+        <img src="raima.jpeg">
+        <h2>I really, really like you babe 💗</h2>
+        <p>You are the most gorgeous girlfriend🌸</p>
+        <button id="startBtn">Start 💕</button>
+    </div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="main" class="page">
+    <div>
+        <h1 id="questionText">Will you be my Valentine? 💘</h1>
+        <img id="mainImg" src="img1.jpeg">
+        <div>
+            <button id="yesBtn" class="choice">YES 💖</button>
+            <button id="noBtn" class="choice">NO 💔</button>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE 3 -->
+<div id="final" class="page">
+    <div>
+        <h1>AWWWWWW you chose my heart babe MWAHHHHHHH 💕</h1>
+        <p>I really like you my cutuuu ✨</p>
+	<p>The way you are and the way you make things feel lighter 💖</p>
+        <p>And the way you stay on my mind 25/8 🫶</p>
+        <p>You make things feel lovely just by being you 🌸</p>
+        <img src="img10.jpeg">
+	<p>Happy Valentine’s Day Raima💘</p>
+    </div>
+</div>
+
+<!-- AUDIO -->
+<audio id="cute" src="cute.mp3" loop></audio>
+<audio id="sad" src="sad.mp3" loop></audio>
+<audio id="cheer" src="cheer.mp3"></audio>
+<audio id="love" src="love.mp3" loop></audio>
+
+<script>
+const pages = {
+    heart: document.getElementById("heartPage"),
+    cover: document.getElementById("cover"),
+    main: document.getElementById("main"),
+    final: document.getElementById("final")
+};
+
+const cute = document.getElementById("cute");
+const sad = document.getElementById("sad");
+const cheer = document.getElementById("cheer");
+const love = document.getElementById("love");
+
+let noClicks = 0;
+let sadPlayed = false;
+
+const noTexts = [
+    "Do you not like me? 🥹",
+    "Why are you doing this babe 🥺",
+    "That kinda hurt 😞",
+    "I can't deal with so many no's 💔",
+    "Please think again baby🙁",
+    "Even the bowl is full with my tears 😢",
+    "My pretty eyes are numb 🥺",
+    "Babeeeee last chance 🌹"
+];
+
+/* DECOR GENERATOR */
+function startDecor() {
+    setInterval(() => {
+        let e = document.createElement("div");
+        e.className = "fall";
+        e.innerText = ["💖","🎈","🌹"][Math.floor(Math.random()*3)];
+        e.style.left = Math.random()*100 + "vw";
+        e.style.animationDuration = 3 + Math.random()*3 + "s";
+        document.body.appendChild(e);
+        setTimeout(()=>e.remove(),6000);
+    }, 300);
+}
+
+/* PAGE 0 → 1 */
+pages.heart.onclick = () => {
+    pages.heart.style.display = "none";
+    pages.cover.style.display = "flex";
+    cute.play();
+    startDecor();
+};
+
+/* PAGE 1 → 2 */
+document.getElementById("startBtn").onclick = () => {
+    pages.cover.style.display = "none";
+    pages.main.style.display = "flex";
+};
+
+/* YES */
+document.getElementById("yesBtn").onclick = () => {
+    cute.pause();
+    sad.pause();
+    sad.currentTime = 0;
+
+    pages.main.style.display = "none";
+    pages.final.style.display = "flex";
+
+    cheer.play();
+    cheer.onended = () => love.play();
+};
+
+/* NO */
+document.getElementById("noBtn").onclick = () => {
+    if (!sadPlayed) {
+        cute.pause();
+        sad.play();
+        sadPlayed = true;
+    }
+
+    noClicks++;
+
+    const img = document.getElementById("mainImg");
+    const text = document.getElementById("questionText");
+    const yes = document.getElementById("yesBtn");
+    const no = document.getElementById("noBtn");
+
+    let imgNumber = Math.min(noClicks + 1, 9);
+    img.src = `img${imgNumber}.jpeg`;
+
+    if (noClicks <= 8) {
+        text.innerText = noTexts[noClicks - 1];
+    }
+
+    yes.style.transform = `scale(${1 + noClicks * 0.04})`;
+    no.style.transform = `scale(${1 - noClicks * 0.03})`;
+
+    if (noClicks >= 8) {
+        no.style.position = "absolute";
+        no.onmouseover = () => {
+            no.style.left = Math.random()*80 + "vw";
+            no.style.top = Math.random()*80 + "vh";
+        };
+    }
+};
+</script>
+
+</body>
+</html>
